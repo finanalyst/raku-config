@@ -1,0 +1,30 @@
+{
+  "name": "RakuConfig",
+  "description": "Get and write config files that are Raku structures",
+  "version": "0.1",
+  "perl": "6.*",
+  "auth": "github:finanalyst",
+  "depends": [
+    "PrettyDump"
+  ],
+  "build-depends": [],
+  "test-depends": [
+    "Test",
+    "Test::META",
+    "Test::Deeply::Relaxed",
+    "File::Directory::Tree"
+  ],
+  "provides": {
+    "RakuConfig": "lib/RakuConfig.pm6"
+  },
+  "resources": [],
+  "support": {
+    "source": "https://github.com/finanalyst/raku-config.git",
+    "bugtracker": "https://github.com/finanalyst/raku-config/issues",
+    "email": "richard@hainsworth.wales"
+  },
+  "license": "Artistic-2.0",
+  "source-url": "git://github.com/finanalyst/raku-config.git",
+  "authors": [ "Richard Hainsworth" ],
+  "source-type": "git"
+}
