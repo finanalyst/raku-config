@@ -49,6 +49,9 @@ my %config = get-config;
 # assumes that 'config.raku' exists in the current directory.
 my %big-config = get-config( 'config-files' );
 # assumes multiple files of the for config-files/*.raku
+# files are evaluated in lexical order
+# detects whether keys in one file overwrite a previously set key
+# throws an Exception if an overwrite is attempted.
 ```
 # head
 
@@ -78,4 +81,4 @@ multi sub write-config($ds, Str:D :$path where ! *.IO.d, :$fn )
 
 
 ----
-Rendered from README at 2021-01-15T23:50:29Z
+Rendered from README at 2021-01-16T11:31:24Z

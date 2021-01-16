@@ -5,8 +5,13 @@ use File::Directory::Tree;
 
 plan 8;
 
+my $tmp = 't/tmp';
+my $cwd = $*CWD;
+rmtree $tmp if $tmp.IO.e;
+mktree $tmp;
+chdir $tmp;
+
 my $path = 'config.raku';
-$path.IO.unlink if $path.IO.e;
 
 my %config = <one two three > Z=> 1 ..*;
 
@@ -24,8 +29,7 @@ my %g = get-config;
 is-deeply-relaxed %g, %config, 'round about correct';
 
 $path.IO.unlink;
-$path = 't/configs';
-rmtree $path if $path.IO.d;
+$path = 'configs';
 mktree $path;
 
 write-config(%config, :$path);
@@ -49,7 +53,7 @@ throws-like { get-config(:$path, :required<mode supply>) },
 lives-ok { get-config(:$path, :required<axfig byfig czfig azfig>) }, 'happy with keys';
 # prevent caching by changing path
 rmtree $path;
-$path = 't/plugs';
+$path = 'plugs';
 mktree $path;
 %big-conf = Empty;
 for <xfig yfig zfig> {
@@ -65,5 +69,9 @@ throws-like { $rv = write-config(%config, :$path, :fn<xxx.raku>) },
     X::RakuConfig::BadDirectory,
     'captures non-existent directory',
     message => / 'Cannot write' .+ 'to' /;
+
+#restore
+chdir $cwd;
+rmtree $tmp;
 
 done-testing;
