@@ -7,6 +7,6 @@ if %*ENV<AUTHOR_TESTING> {
     meta-ok;
 }
 else {
-    skip 'skip meta file test';
+    skip 'Set AUTHOR_TESTING to test meta file';
 }
 done-testing;
