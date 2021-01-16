@@ -8,7 +8,7 @@ plan 9;
 my $tmp = 'tmp';
 my $cwd = $*CWD;
 rmtree $tmp if $tmp.IO.e;
-mktree $tmp;
+$tmp.IO.mkdir;
 chdir $tmp;
 
 my $path = 'config.raku';
