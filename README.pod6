@@ -4,7 +4,7 @@
 =AUTHOR Richard Hainsworth, aka finanalyst
 =SUBTITLE Using Raku code to write configuration files.
 
-=head Purpose
+=head1 Purpose
 
 Lots of modules need configuration files. Many Raku modules use JSON, or YAML. But neither
 YAML nor JSON is not Raku, and a configuration file has to be brought in
@@ -22,7 +22,7 @@ Environment variables, or slurp in local files.
 When writing a configuration file, there are many caveats relating to what can be serialised,
 but for static data, not closures, writing a config file is easy.
 
-=head Installation and use
+=head1 Installation and use
 
 Simply
 
@@ -39,7 +39,7 @@ then
     # detects whether keys in one file overwrite a previously set key
     # throws an Exception if an overwrite is attempted.
 
-=head Subs
+=head1 Subs
 Only two subs are exported
 
 =head2 get-config

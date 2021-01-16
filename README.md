@@ -5,9 +5,9 @@
 ----
 ## Table of Contents
 [License](#license)  
-[Head](#head)  
-[Head](#head)  
-[Head](#head)  
+[Purpose](#purpose)  
+[Installation and use](#installation-and-use)  
+[Subs Only two subs are exported](#subs-only-two-subs-are-exported)  
 [get-config](#get-config)  
 [write-config](#write-config)  
 
@@ -16,10 +16,7 @@
 
 Artist 2
 
-# head
-
-Purpose
-
+# Purpose
 Lots of modules need configuration files. Many Raku modules use JSON, or YAML. But neither YAML nor JSON is not Raku, and a configuration file has to be brought in and assigned to a data structure, typically a HASH.
 
 But writing JSON or YAML means memorising the syntax of that language, then mapping it to Raku.
@@ -32,10 +29,7 @@ When reading in a configuration file, any Raku code is possible, so configuratio
 
 When writing a configuration file, there are many caveats relating to what can be serialised, but for static data, not closures, writing a config file is easy.
 
-# head
-
-Installation and use
-
+# Installation and use
 Simply
 
 ```
@@ -53,10 +47,7 @@ my %big-config = get-config( 'config-files' );
 # detects whether keys in one file overwrite a previously set key
 # throws an Exception if an overwrite is attempted.
 ```
-# head
-
-Subs Only two subs are exported
-
+# Subs Only two subs are exported
 ## get-config
 ```
 #| :path is an existing file, or a current directory,
@@ -81,4 +72,4 @@ multi sub write-config($ds, Str:D :$path where ! *.IO.d, :$fn )
 
 
 ----
-Rendered from README at 2021-01-16T11:31:24Z
+Rendered from README at 2021-01-16T16:09:24Z
