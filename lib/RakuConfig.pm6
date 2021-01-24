@@ -59,7 +59,6 @@ module RakuConfig {
         %config = Empty;
         given $path.IO {
             when :f {
-                say "At $?LINE f path $path";
                 %config = EVALFILE $path;
                 CATCH {
                     default {
