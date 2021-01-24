@@ -55,7 +55,8 @@ my %big-config = get-config( 'config-files' );
 #| :required are the keys needed in a config after all .raku files are evaluated
 #| If :required is not given, or empty, no keys will be tested for existence
 #| With no parameters, the file 'config.raku' in the current directory is assumed
-multi sub get-config(:$path = 'config.raku', :@required)
+#| Previous value of config is not used when :cache(False)
+multi sub get-config(:$path = 'config.raku', :@required, :cache = True)
 ```
 ## write-config
 ```
@@ -72,4 +73,4 @@ multi sub write-config($ds, Str:D :$path where ! *.IO.d, :$fn )
 
 
 ----
-Rendered from README at 2021-01-16T16:09:24Z
+Rendered from README at 2021-01-24T16:25:23Z

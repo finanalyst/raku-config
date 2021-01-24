@@ -1,0 +1,11 @@
+=begin pod
+=TITLE Changlog
+=SUBTITLE For RakuConfig
+
+=head1 2021-01-24
+=item Add Changelog
+=item Add test for no config.raku file
+=item re-order tests, put author and extensive tests in xt/
+=item add :cache = True option, so that if :!cache, then the previous value of config is not used
+
+=end pod

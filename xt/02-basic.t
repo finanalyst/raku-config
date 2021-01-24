@@ -3,7 +3,7 @@ use RakuConfig;
 use Test::Deeply::Relaxed;
 use File::Directory::Tree;
 
-plan 9;
+plan 10;
 
 my $tmp = 'tmp';
 my $cwd = $*CWD;
@@ -13,10 +13,13 @@ chdir $tmp;
 
 my $path = 'config.raku';
 
+throws-like { &get-config( :!cache ) }, X::RakuConfig::NoFiles,
+        message => / 'config.raku' .+ 'is not a file or' /, 'fails with no config file';
+
 my %config = <one two three > Z=> 1 ..*;
 $path.IO.spurt: %config.raku;
 
-is-deeply-relaxed get-config, %config, 'simple get works';
+is-deeply-relaxed get-config(:!cache), %config, 'simple get works';
 $path.IO.unlink;
 
 write-config(%config);

@@ -1,8 +1,8 @@
 use PrettyDump;
 
 class X::RakuConfig::NoFiles is Exception {
-    has $!path;
-    has $!comment;
+    has $.path;
+    has $.comment;
     method message {
         "｢$!path｣ $!comment"
     }
@@ -37,26 +37,29 @@ class X::RakuConfig::BadDirectory is Exception {
 }
 
 module RakuConfig {
-
-    proto sub get-config(| --> Hash) is export {*};
-
-    proto sub write-config(|) is export {*};
-
     #| :path is an existing file, or a current directory,
     #| if a directory, it should contain .raku files
     #| :required are the keys needed in a config after all .raku files are evaluated
     #| If :required is not given, or empty, no keys will be tested for existence
     #| With no parameters, the file 'config.raku' in the current directory is assumed
-    multi sub get-config(:$path = 'config.raku', :@required) {
+    #| Previous value of config is not used when :cache(False)
+    proto sub get-config(| --> Hash) is export {*};
+
+    #| writes $s to config.raku by default,
+    #| will also write tp :path / :fn, if path exists
+    proto sub write-config(|) is export {*};
+
+    multi sub get-config(:$path = 'config.raku', :@required, Bool :$cache = True) {
         state %config;
         state $prev-path;
         my Bool $test-keys = ?( +@required );
-        return %config if $prev-path and $path eq $prev-path
+        return %config if $cache and $prev-path and $path eq $prev-path
                 and (!$test-keys or %config.keys (>=) @required);
         $prev-path = $path;
         %config = Empty;
         given $path.IO {
             when :f {
+                say "At $?LINE f path $path";
                 %config = EVALFILE $path;
                 CATCH {
                     default {
@@ -95,7 +98,6 @@ module RakuConfig {
         # a superset of the required keys.
         %config
     }
-    #| writes $s to config.raku by default, but will take any path fn, so long as path exists
     multi sub write-config($ds) {
         write-config($ds, :path<.>, :fn<config.raku>)
     }
