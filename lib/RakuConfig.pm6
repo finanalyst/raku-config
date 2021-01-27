@@ -49,11 +49,11 @@ module RakuConfig {
     #| will also write tp :path / :fn, if path exists
     proto sub write-config(|) is export {*};
 
-    multi sub get-config(:$path = 'config.raku', :@required, Bool :$cache = True) {
+    multi sub get-config(:$path = 'config.raku', :@required, Bool :$no-cache = False) {
         state %config;
         state $prev-path;
         my Bool $test-keys = ?( +@required );
-        return %config if $cache and $prev-path and $path eq $prev-path
+        return %config if ! $no-cache and $prev-path and $path eq $prev-path
                 and (!$test-keys or %config.keys (>=) @required);
         $prev-path = $path;
         %config = Empty;

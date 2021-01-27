@@ -3,8 +3,8 @@ use RakuConfig;
 use Test::Deeply::Relaxed;
 use File::Directory::Tree;
 
-plan 10;
-
+plan 11;
+my %config;
 my $tmp = 'tmp';
 my $cwd = $*CWD;
 rmtree $tmp if $tmp.IO.e;
@@ -13,14 +13,12 @@ chdir $tmp;
 
 my $path = 'config.raku';
 
-throws-like { &get-config( :!cache ) }, X::RakuConfig::NoFiles,
+throws-like { &get-config( :no-cache ) }, X::RakuConfig::NoFiles,
         message => / 'config.raku' .+ 'is not a file or' /, 'fails with no config file';
 
-my %config = <one two three > Z=> 1 ..*;
+%config = <one two three > Z=> 1 ..*;
 $path.IO.spurt: %config.raku;
-
-is-deeply-relaxed get-config(:!cache), %config, 'simple get works';
-$path.IO.unlink;
+is-deeply-relaxed get-config(:no-cache), %config, 'simple get works';
 
 write-config(%config);
 my $rv = $path.IO.slurp;
@@ -31,7 +29,7 @@ like $rv, /
 ] ** 3
 /, 'written human readable';
 
-is-deeply-relaxed get-config, %config, 'round about correct';
+is-deeply-relaxed get-config(:no-cache), %config, 'round about correct';
 
 $path.IO.unlink;
 $path = 'configs';
@@ -54,7 +52,7 @@ throws-like { get-config(:$path, :required<mode supply>) },
         X::RakuConfig::MissingKeys,
         message => / 'The following keys were expected' /,
         'died without required keys', ;
-# with automagical caching
+# with caching
 lives-ok { get-config(:$path, :required<axfig byfig czfig azfig>) }, 'happy with keys';
 # prevent caching by changing path
 rmtree $path;
@@ -74,6 +72,32 @@ throws-like { $rv = write-config(%config, :$path, :fn<xxx.raku>) },
     X::RakuConfig::BadDirectory,
     'captures non-existent directory',
     message => / 'Cannot write' .+ 'to' /;
+
+%config = %(
+    cache => 'cache',
+    sources => 'sources',
+    :!no-status,
+    source-obtain => '',
+    source-refresh => '',
+    mode => 'test',
+    extensions => <rakudoc pod6 pm6 pl6 >
+);
+
+'config.raku'.IO.spurt(q:to/DATA/);
+    %(
+        cache => 'cache',
+        sources => 'sources',
+        :!no-status,
+        source-obtain => '',
+        source-refresh => '',
+        mode => 'test',
+        extensions => <rakudoc pod6 pm6 pl6 >
+    )
+    DATA
+is-deeply-relaxed get-config(:no-cache,
+        :required< no-status cache sources source-obtain source-refresh mode extensions >),
+        %config,
+        'with keys set to empty strings required works';
 
 #restore
 chdir $cwd;
