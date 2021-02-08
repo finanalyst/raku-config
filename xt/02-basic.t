@@ -3,7 +3,7 @@ use RakuConfig;
 use Test::Deeply::Relaxed;
 use File::Directory::Tree;
 
-plan 11;
+plan 9;
 my %config;
 my $tmp = 'tmp';
 my $cwd = $*CWD;
@@ -20,14 +20,7 @@ throws-like { &get-config( :no-cache ) }, X::RakuConfig::NoFiles,
 $path.IO.spurt: %config.raku;
 is-deeply-relaxed get-config(:no-cache), %config, 'simple get works';
 
-write-config(%config);
-my $rv = $path.IO.slurp;
-like $rv, /
-['one => 1' \,? .+?
-| 'two => 2' \,? .+?
-| 'three => 3' \,? .+?
-] ** 3
-/, 'written human readable';
+$path.IO.spurt: %config.raku;
 
 is-deeply-relaxed get-config(:no-cache), %config, 'round about correct';
 
@@ -35,14 +28,14 @@ $path.IO.unlink;
 $path = 'configs';
 mktree $path;
 
-write-config(%config, :$path);
+"$path/config.raku".IO.spurt: %config.raku;
 is-deeply-relaxed get-config(:path("$path/config.raku")), %config, 'different filename round about correct';
 
 empty-directory $path;
 my %big-conf;
 for <xfig yfig zfig> {
     my %config = (<a b c>  X~ $_) Z=> 1 ..*;
-    write-config(%config, :$path, :fn($_ ~ '.raku'));
+    "$path/$_\.raku".IO.spurt: %config.raku;
     %big-conf,=%config;
 }
 
@@ -54,24 +47,11 @@ throws-like { get-config(:$path, :required<mode supply>) },
         'died without required keys', ;
 # with caching
 lives-ok { get-config(:$path, :required<axfig byfig czfig azfig>) }, 'happy with keys';
-# prevent caching by changing path
-rmtree $path;
-$path = 'plugs';
-mktree $path;
-%big-conf = Empty;
-for <xfig yfig zfig> {
-    my %config = (<a b c>  X~ $_) Z=> 1 ..*;
-    write-config(%config, :$path, :fn($_ ~ '.raku'));
-    %big-conf,= %config;
-}
-is-deeply-relaxed get-config(:$path, :required<axfig byfig czfig azfig>),
+
+is-deeply-relaxed get-config(:$path, :no-cache, :required<axfig byfig czfig azfig>),
         %big-conf, "config from multiple files with required keys";
 
 rmtree $path;
-throws-like { $rv = write-config(%config, :$path, :fn<xxx.raku>) },
-    X::RakuConfig::BadDirectory,
-    'captures non-existent directory',
-    message => / 'Cannot write' .+ 'to' /;
 
 %config = %(
     cache => 'cache',

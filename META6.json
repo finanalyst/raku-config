@@ -1,19 +1,12 @@
 {
   "name": "RakuConfig",
-  "description": "Get and write config files that are Raku structures",
-  "version": "0.2",
+  "description": "Get config files that are Raku structures",
+  "version": "0.3",
   "perl": "6.*",
   "auth": "github:finanalyst",
-  "depends": [
-    "PrettyDump"
-  ],
+  "depends": [],
   "build-depends": [],
-  "test-depends": [
-    "Test",
-    "Test::META",
-    "Test::Deeply::Relaxed",
-    "File::Directory::Tree"
-  ],
+  "test-depends": [ ],
   "provides": {
     "RakuConfig": "lib/RakuConfig.pm6"
   },

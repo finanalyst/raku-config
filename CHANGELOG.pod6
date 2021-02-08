@@ -12,4 +12,8 @@
 =item added test for empty strings in config files, no need to change code
 =item removed :cache and replaced with :no-cache which is False by default
 
+=head1 2021-02-08
+=item removed write-config, so as to reduce dependency on PrettyDump.
+=item remove 'Test::META', 'Test::Deeply::Relaxed', 'File::Directory::Tree' from Test depends.
+
 =end pod

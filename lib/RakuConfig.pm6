@@ -1,4 +1,4 @@
-use PrettyDump;
+#use PrettyDump;
 
 class X::RakuConfig::NoFiles is Exception {
     has $.path;
@@ -28,13 +28,13 @@ class X::RakuConfig::OverwriteKey is Exception {
         "｢$!path｣ has keys which over-write the existing: " ~ @!overlap.gist
     }
 }
-class X::RakuConfig::BadDirectory is Exception {
-    has $.path;
-    has $.fn;
-    method message {
-        "Cannot write ｢$!fn｣ to ｢$!path｣."
-    }
-}
+#class X::RakuConfig::BadDirectory is Exception {
+#    has $.path;
+#    has $.fn;
+#    method message {
+#        "Cannot write ｢$!fn｣ to ｢$!path｣."
+#    }
+#}
 
 module RakuConfig {
     #| :path is an existing file, or a current directory,
@@ -97,69 +97,69 @@ module RakuConfig {
         # a superset of the required keys.
         %config
     }
-    multi sub write-config($ds) {
-        write-config($ds, :path<.>, :fn<config.raku>)
-    }
-    multi sub write-config($ds, Str:D :$path where *.IO.d, Str :$fn = 'config.raku') {
-        "$path/$fn".IO.spurt: compile-dump($ds)
-    }
-    multi sub write-config($ds, Str:D :$path where ! *.IO.d, :$fn ) {
-        X::RakuConfig::BadDirectory.new(:$path,:$fn).throw;
-    }
-
-    sub compile-dump($ds --> Str) {
-        my $pretty = PrettyDump.new;
-        my $pair-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
-            [~]
-            $ds.key,
-            ' => ',
-            $pretty.dump: $ds.value, :depth(0)
-
-        };
-        my $hash-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
-            my $longest-key = $ds.keys.max: *.chars;
-            my $template = "%-{ 2 + $depth + 1 + $longest-key.chars }s => %s";
-
-            my $str = do {
-                if @($ds).keys {
-                    my $separator = [~] $pretty.pre-separator-spacing, ',', $pretty.post-separator-spacing;
-                    [~]
-                    $pretty.pre-item-spacing,
-                    join($separator,
-                            grep { $_ ~~ Str:D },
-                                    map {
-                                        /^ \t* '｢' .*? '｣' \h+ '=>' \h+/
-                                                ??
-                                                sprintf($template, .split: / \h+ '=>' \h+  /, 2)
-                                                !!
-                                                $_
-                                    },
-                                            map { $pretty.dump: $_, :depth($depth + 1) }, $ds.pairs
-                    ),
-                    $pretty.post-item-spacing;
-                }
-                else {
-                    $pretty.intra-group-spacing;
-                }
-            }
-
-            "\%($str)"
-        }
-        my $match-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
-            $pretty.Match($ds, :start</>, :end</>)
-        };
-        my $array-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
-            $pretty.Array($ds, :start<[>)
-        };
-        my $list-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
-            $pretty.List($ds, :start<(>)
-        };
-
-        $pretty.add-handler: 'Pair', $pair-code;
-        $pretty.add-handler: 'Hash', $hash-code;
-        $pretty.add-handler: 'Array', $array-code;
-        $pretty.add-handler: 'Match', $match-code;
-        $pretty.add-handler: 'List', $list-code;
-        $pretty.dump: $ds
-    }
+#    multi sub write-config($ds) {
+#        write-config($ds, :path<.>, :fn<config.raku>)
+#    }
+#    multi sub write-config($ds, Str:D :$path where *.IO.d, Str :$fn = 'config.raku') {
+#        "$path/$fn".IO.spurt: compile-dump($ds)
+#    }
+#    multi sub write-config($ds, Str:D :$path where ! *.IO.d, :$fn ) {
+#        X::RakuConfig::BadDirectory.new(:$path,:$fn).throw;
+#    }
+#
+#    sub compile-dump($ds --> Str) {
+#        my $pretty = PrettyDump.new;
+#        my $pair-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
+#            [~]
+#            $ds.key,
+#            ' => ',
+#            $pretty.dump: $ds.value, :depth(0)
+#
+#        };
+#        my $hash-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
+#            my $longest-key = $ds.keys.max: *.chars;
+#            my $template = "%-{ 2 + $depth + 1 + $longest-key.chars }s => %s";
+#
+#            my $str = do {
+#                if @($ds).keys {
+#                    my $separator = [~] $pretty.pre-separator-spacing, ',', $pretty.post-separator-spacing;
+#                    [~]
+#                    $pretty.pre-item-spacing,
+#                    join($separator,
+#                            grep { $_ ~~ Str:D },
+#                                    map {
+#                                        /^ \t* '｢' .*? '｣' \h+ '=>' \h+/
+#                                                ??
+#                                                sprintf($template, .split: / \h+ '=>' \h+  /, 2)
+#                                                !!
+#                                                $_
+#                                    },
+#                                            map { $pretty.dump: $_, :depth($depth + 1) }, $ds.pairs
+#                    ),
+#                    $pretty.post-item-spacing;
+#                }
+#                else {
+#                    $pretty.intra-group-spacing;
+#                }
+#            }
+#
+#            "\%($str)"
+#        }
+#        my $match-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
+#            $pretty.Match($ds, :start</>, :end</>)
+#        };
+#        my $array-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
+#            $pretty.Array($ds, :start<[>)
+#        };
+#        my $list-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
+#            $pretty.List($ds, :start<(>)
+#        };
+#
+#        $pretty.add-handler: 'Pair', $pair-code;
+#        $pretty.add-handler: 'Hash', $hash-code;
+#        $pretty.add-handler: 'Array', $array-code;
+#        $pretty.add-handler: 'Match', $match-code;
+#        $pretty.add-handler: 'List', $list-code;
+#        $pretty.dump: $ds
+#    }
 }

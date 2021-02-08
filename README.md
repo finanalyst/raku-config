@@ -8,9 +8,9 @@
 [License](#license)  
 [Purpose](#purpose)  
 [Installation and use](#installation-and-use)  
-[Subs Only two subs are exported](#subs-only-two-subs-are-exported)  
+[Subs Only one sub is exported](#subs-only-one-sub-is-exported)  
 [get-config](#get-config)  
-[write-config](#write-config)  
+[Testing](#testing)  
 
 ----
 # LICENSE
@@ -48,7 +48,7 @@ my %big-config = get-config( 'config-files' );
 # detects whether keys in one file overwrite a previously set key
 # throws an Exception if an overwrite is attempted.
 ```
-# Subs Only two subs are exported
+# Subs Only one sub is exported
 ## get-config
 ```
 #| :path is an existing file, or a current directory,
@@ -59,13 +59,9 @@ my %big-config = get-config( 'config-files' );
 #| Previous value of config is not used when :no-cache(True)
 multi sub get-config(:$path = 'config.raku', :@required, :no-cache = False)
 ```
-## write-config
-```
-#| writes $s to config.raku by default, but will take any path fn, so long as path exists
-multi sub write-config($ds)
-multi sub write-config($ds, Str:D :$path where *.IO.d, Str :$fn = 'config.raku')
-multi sub write-config($ds, Str:D :$path where ! *.IO.d, :$fn )
-```
+# Testing
+To reduce testing and installation hassle, the following have been removed from Test-depends: 'Test::META', 'Test::Deeply::Relaxed', 'File::Directory::Tree'". They will need to be installed to prove the xt/ tests.
+
 
 
 
@@ -73,4 +69,4 @@ multi sub write-config($ds, Str:D :$path where ! *.IO.d, :$fn )
 
 
 ----
-Rendered from README at 2021-01-27T18:41:01Z
+Rendered from README at 2021-02-08T12:35:38Z
