@@ -16,4 +16,9 @@
 =item removed write-config, so as to reduce dependency on PrettyDump.
 =item remove 'Test::META', 'Test::Deeply::Relaxed', 'File::Directory::Tree' from Test depends.
 
+=head1 v0.3.1 2022-07-08
+=item bump version
+=item change auth to zef, prepare for fez
+=item change to githhub actions
+
 =end pod

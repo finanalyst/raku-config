@@ -1,8 +1,11 @@
+![github-tests-passing-badge](https://github.com/finanalyst/raku-config/actions/workflows/test.yaml/badge.svg)
 # Raku Config files
+>Using Raku code to write configuration files.
+
+
 > **Author** Richard Hainsworth, aka finanalyst
 
 
-----
 ----
 ## Table of Contents
 [License](#license)  
@@ -69,4 +72,4 @@ To reduce testing and installation hassle, the following have been removed from 
 
 
 ----
-Rendered from README at 2021-02-08T12:35:38Z
+Rendered from README at 2022-07-08T22:50:54Z

@@ -1,11 +1,12 @@
 # Changlog
+>For RakuConfig
 
-----
-----
+
 ## Table of Contents
 [2021-01-24](#2021-01-24)  
 [2021-01-27](#2021-01-27)  
 [2021-02-08](#2021-02-08)  
+[v0.3.1 2022-07-08](#v031-2022-07-08)  
 
 ----
 # 2021-01-24
@@ -23,15 +24,22 @@
 *  removed :cache and replaced with :no-cache which is False by default
 
 # 2021-02-08
-
-
 *  removed write-config, so as to reduce dependency on PrettyDump.
 
 *  remove 'Test::META', 'Test::Deeply::Relaxed', 'File::Directory::Tree' from Test depends.
+
+# v0.3.1 2022-07-08
+
+
+*  bump version
+
+*  change auth to zef, prepare for fez
+
+*  change to githhub actions
 
 
 
 
 
 ----
-Rendered from CHANGELOG at 2021-02-08T12:35:37Z
+Rendered from CHANGELOG at 2022-07-08T22:51:13Z
