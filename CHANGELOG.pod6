@@ -21,4 +21,8 @@
 =item change auth to zef, prepare for fez
 =item change to githhub actions
 
+=head1 v0.4.0 2022-07-08
+=item change version to 3 part, bump
+
+
 =end pod

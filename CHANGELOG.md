@@ -7,6 +7,7 @@
 [2021-01-27](#2021-01-27)  
 [2021-02-08](#2021-02-08)  
 [v0.3.1 2022-07-08](#v031-2022-07-08)  
+[v0.4.0 2022-07-08](#v040-2022-07-08)  
 
 ----
 # 2021-01-24
@@ -29,17 +30,20 @@
 *  remove 'Test::META', 'Test::Deeply::Relaxed', 'File::Directory::Tree' from Test depends.
 
 # v0.3.1 2022-07-08
-
-
 *  bump version
 
 *  change auth to zef, prepare for fez
 
 *  change to githhub actions
 
+# v0.4.0 2022-07-08
+
+
+*  change version to 3 part, bump
+
 
 
 
 
 ----
-Rendered from CHANGELOG at 2022-07-08T22:51:13Z
+Rendered from CHANGELOG at 2022-07-08T23:24:27Z
