@@ -8,6 +8,7 @@
 [2021-02-08](#2021-02-08)  
 [v0.3.1 2022-07-08](#v031-2022-07-08)  
 [v0.4.0 2022-07-08](#v040-2022-07-08)  
+[Head](#head)  
 
 ----
 # 2021-01-24
@@ -37,13 +38,27 @@
 *  change to githhub actions
 
 # v0.4.0 2022-07-08
-
-
 *  change version to 3 part, bump
+
+# head
+
+v0.5.0 2022-08-19
+
+
+
+*  removed all mention of :no-cache. It is an unnecessary optimisation. Config files are not large.
+
+*  comment out proto for write-config. This removes all reference to write-config.
+
+*  rename xt/01
+
+*  rewrote test files & README to eliminated :no-cache
+
+*  renamed all files to raku* extensions
 
 
 
 
 
 ----
-Rendered from CHANGELOG at 2022-07-08T23:24:27Z
+Rendered from CHANGELOG at 2022-08-19T21:27:51Z

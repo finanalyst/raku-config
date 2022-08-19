@@ -13,16 +13,16 @@ chdir $tmp;
 
 my $path = 'config.raku';
 
-throws-like { &get-config( :no-cache ) }, X::RakuConfig::NoFiles,
+throws-like { get-config() }, X::RakuConfig::NoFiles,
         message => / 'config.raku' .+ 'is not a file or' /, 'fails with no config file';
 
 %config = <one two three > Z=> 1 ..*;
 $path.IO.spurt: %config.raku;
-is-deeply-relaxed get-config(:no-cache), %config, 'simple get works';
+is-deeply-relaxed get-config(), %config, 'simple get works';
 
 $path.IO.spurt: %config.raku;
 
-is-deeply-relaxed get-config(:no-cache), %config, 'round about correct';
+is-deeply-relaxed get-config(), %config, 'round about correct';
 
 $path.IO.unlink;
 $path = 'configs';
@@ -48,7 +48,7 @@ throws-like { get-config(:$path, :required<mode supply>) },
 # with caching
 lives-ok { get-config(:$path, :required<axfig byfig czfig azfig>) }, 'happy with keys';
 
-is-deeply-relaxed get-config(:$path, :no-cache, :required<axfig byfig czfig azfig>),
+is-deeply-relaxed get-config(:$path, :required<axfig byfig czfig azfig>),
         %big-conf, "config from multiple files with required keys";
 
 rmtree $path;
@@ -74,10 +74,11 @@ rmtree $path;
         extensions => <rakudoc pod6 pm6 pl6 >
     )
     DATA
-is-deeply-relaxed get-config(:no-cache,
-        :required< no-status cache sources source-obtain source-refresh mode extensions >),
-        %config,
-        'with keys set to empty strings required works';
+is-deeply-relaxed get-config(
+    :required< no-status cache sources source-obtain source-refresh mode extensions >
+    ),
+    %config,
+    'with keys set to empty strings required works';
 
 #restore
 chdir $cwd;

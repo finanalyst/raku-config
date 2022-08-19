@@ -1,6 +1,6 @@
 ![github-tests-passing-badge](https://github.com/finanalyst/raku-config/actions/workflows/test.yaml/badge.svg)
 # Raku Config files
->Using Raku code to write configuration files.
+>Introducing RakuON (Raku Object Notation) to write configuration files.
 
 
 > **Author** Richard Hainsworth, aka finanalyst
@@ -27,11 +27,11 @@ But writing JSON or YAML means memorising the syntax of that language, then mapp
 
 So, why not simply write the file in Raku and use EVALFILE to assign it to a Hash?
 
-This module uses that idea, but allows for the configuration module to be anywhere.
+There is an objection that Raku code is being injected into a program. But the same is true for any module. Configuration is only taken from a file in the control of the developer. Configuration is not a change of state from outside the control of the developer. It is EVALFILE, not EVAL.
+
+This module uses that idea, but allows for the configuration file(s) to be anywhere accessible by the program.
 
 When reading in a configuration file, any Raku code is possible, so configuration files can look at Environment variables, or slurp in local files.
-
-When writing a configuration file, there are many caveats relating to what can be serialised, but for static data, not closures, writing a config file is easy.
 
 # Installation and use
 Simply
@@ -59,8 +59,7 @@ my %big-config = get-config( 'config-files' );
 #| :required are the keys needed in a config after all .raku files are evaluated
 #| If :required is not given, or empty, no keys will be tested for existence
 #| With no parameters, the file 'config.raku' in the current directory is assumed
-#| Previous value of config is not used when :no-cache(True)
-multi sub get-config(:$path = 'config.raku', :@required, :no-cache = False)
+multi sub get-config(:$path = 'config.raku', :@required )
 ```
 # Testing
 To reduce testing and installation hassle, the following have been removed from Test-depends: 'Test::META', 'Test::Deeply::Relaxed', 'File::Directory::Tree'". They will need to be installed to prove the xt/ tests.
@@ -72,4 +71,4 @@ To reduce testing and installation hassle, the following have been removed from 
 
 
 ----
-Rendered from README at 2022-07-08T22:50:54Z
+Rendered from README at 2022-08-19T21:28:03Z

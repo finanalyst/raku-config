@@ -42,23 +42,11 @@ module RakuConfig {
     #| :required are the keys needed in a config after all .raku files are evaluated
     #| If :required is not given, or empty, no keys will be tested for existence
     #| With no parameters, the file 'config.raku' in the current directory is assumed
-    #| Previous value of config is not used when :cache(False)
-    proto sub get-config(| --> Hash) is export {*};
-
-    #| writes $s to config.raku by default,
-    #| will also write tp :path / :fn, if path exists
-    proto sub write-config(|) is export {*};
-
-    multi sub get-config(:$path = 'config.raku', :@required, Bool :$no-cache = False) {
-        state %config;
-        state $prev-path;
+    multi sub get-config(:$path = 'config.raku', :@required) is export {
+        my %config;
         my Bool $test-keys = ?( +@required );
-        return %config if ! $no-cache and $prev-path and $path eq $prev-path
-                and (!$test-keys or %config.keys (>=) @required);
-        $prev-path = $path;
-        %config = Empty;
         given $path.IO {
-            when :f {
+            when :e and :f {
                 %config = EVALFILE $path;
                 CATCH {
                     default {

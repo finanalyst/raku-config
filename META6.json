@@ -11,7 +11,7 @@
   "build-depends": [],
   "test-depends": [],
   "provides": {
-    "RakuConfig": "lib/RakuConfig.pm6"
+    "RakuConfig": "lib/RakuConfig.rakumod"
   },
   "resources": [],
   "support": {

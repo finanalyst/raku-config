@@ -24,5 +24,11 @@
 =head1 v0.4.0 2022-07-08
 =item change version to 3 part, bump
 
+=head v0.5.0 2022-08-19
+=item removed all mention of :no-cache. It is an unnecessary optimisation. Config files are not large.
+=item comment out proto for write-config. This removes all reference to write-config.
+=item rename xt/01
+=item rewrote test files & README to eliminated :no-cache
+=item renamed all files to raku* extensions
 
 =end pod
