@@ -46,7 +46,7 @@ then
     # throws an Exception if an overwrite is attempted.
 
 =head1 Subs
-Only one sub is exported
+Two subs are exported
 
 =head2 get-config
 
@@ -56,6 +56,17 @@ Only one sub is exported
     #| If :required is not given, or empty, no keys will be tested for existence
     #| With no parameters, the file 'config.raku' in the current directory is assumed
     multi sub get-config(:$path = 'config.raku', :@required )
+
+=head2 write-config
+
+    #| :path is an existing file, or a current directory,
+    #| if a directory, it should contain .raku files
+    #| :save are the keys to be stored in the config file
+    #| If :save is not given, or empty, ALL the keys will be saved
+    #| With no parameters, the file 'config.raku' in the current directory is assumed
+    multi sub write-config(:$path = 'config.raku', :@required )
+
+C<write-config> attempts to write a readable config file. But if a type is not known, it will revert to the C<.raku> version.
 
 =head1 Testing
 

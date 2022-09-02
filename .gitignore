@@ -2,3 +2,5 @@
 .idea/
 arc/
 /raku-config.iml
+/xt/tmp/config.raku
+/sdist/OCRC2jzl.tar.gz

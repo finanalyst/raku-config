@@ -5,15 +5,14 @@ use File::Directory::Tree;
 
 plan 9;
 my %config;
-my $tmp = 'tmp';
-my $cwd = $*CWD;
+my $tmp = 'xt/tmp';
 rmtree $tmp if $tmp.IO.e;
 mktree $tmp;
 chdir $tmp;
 
 my $path = 'config.raku';
 
-throws-like { get-config() }, X::RakuConfig::NoFiles,
+throws-like { get-config() }, RakuConfig::NoFiles,
         message => / 'config.raku' .+ 'is not a file or' /, 'fails with no config file';
 
 %config = <one two three > Z=> 1 ..*;
@@ -42,7 +41,7 @@ for <xfig yfig zfig> {
 is-deeply-relaxed get-config(:$path), %big-conf, "config from multiple files";
 
 throws-like { get-config(:$path, :required<mode supply>) },
-        X::RakuConfig::MissingKeys,
+        RakuConfig::MissingKeys,
         message => / 'The following keys were expected' /,
         'died without required keys', ;
 # with caching
@@ -79,9 +78,5 @@ is-deeply-relaxed get-config(
     ),
     %config,
     'with keys set to empty strings required works';
-
-#restore
-chdir $cwd;
-rmtree $tmp;
 
 done-testing;

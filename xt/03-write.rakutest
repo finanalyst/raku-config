@@ -1,0 +1,56 @@
+use v6.d;
+use Test;
+use RakuConfig;
+use File::Directory::Tree;
+
+plan 11;
+my %config;
+my $tmp = 'xt/new-tmp';
+if $tmp.IO.e {
+    empty-directory $tmp
+}
+else {
+    mktree $tmp
+}
+my $top = $*CWD;
+chdir $tmp;
+
+my $rv;
+lives-ok {$rv = format-config(%(:render,) )}, 'Bool lives';
+like $rv, / ':render,' /, 'got True value';
+like format-config(%(:!render,) ), / ':!render,' /, 'got render False value';
+like format-config(%(:render(),) ), / ':render(),' /, 'got Empty string';
+my %conf = <one two three four five> Z=> 1..*;
+use MONKEY-SEE-NO-EVAL;
+cmp-ok (EVAL format-config(%conf)).keys, '(==)', <one two three four five>, 'same keys';
+cmp-ok (EVAL format-config(%conf, :save(<two five>) )).keys, '(==)', <two five>, 'only saved keys pass through';
+no MONKEY-SEE-NO-EVAL;
+class MyClass {
+    has $.a;
+    method b() { say $!a }
+}
+my $x = MyClass.new(:a<one>);
+%config = %(
+    cache => 'cache',
+    sources => 'sources',
+    :!no-status,
+    source-obtain => '',
+    source-refresh => '',
+    mode => 'test',
+    extensions => <rakudoc pod6 pm6 pl6 >,
+    strange => $x,
+);
+
+nok 'config.raku'.IO ~~ :e & :f, 'config not present yet';
+
+lives-ok { write-config(%config) },'write-config returns';
+ok 'config.raku'.IO ~~ :e & :f, 'config is now present';
+
+my %round = get-config;
+cmp-ok %config.keys, '(==)', %round.keys, 'round tour same keys';
+isa-ok %round<strange>, MyClass, 'got uncommon object';
+
+#restore
+chdir $top;
+rmtree $tmp;
+done-testing;

@@ -11,8 +11,9 @@
 [License](#license)  
 [Purpose](#purpose)  
 [Installation and use](#installation-and-use)  
-[Subs Only one sub is exported](#subs-only-one-sub-is-exported)  
+[Subs Two subs are exported](#subs-two-subs-are-exported)  
 [get-config](#get-config)  
+[write-config](#write-config)  
 [Testing](#testing)  
 
 ----
@@ -51,7 +52,7 @@ my %big-config = get-config( 'config-files' );
 # detects whether keys in one file overwrite a previously set key
 # throws an Exception if an overwrite is attempted.
 ```
-# Subs Only one sub is exported
+# Subs Two subs are exported
 ## get-config
 ```
 #| :path is an existing file, or a current directory,
@@ -61,6 +62,17 @@ my %big-config = get-config( 'config-files' );
 #| With no parameters, the file 'config.raku' in the current directory is assumed
 multi sub get-config(:$path = 'config.raku', :@required )
 ```
+## write-config
+```
+#| :path is an existing file, or a current directory,
+#| if a directory, it should contain .raku files
+#| :save are the keys to be stored in the config file
+#| If :save is not given, or empty, ALL the keys will be saved
+#| With no parameters, the file 'config.raku' in the current directory is assumed
+multi sub write-config(:$path = 'config.raku', :@required )
+```
+`write-config` attempts to write a readable config file. But if a type is not known, it will revert to the `.raku` version.
+
 # Testing
 To reduce testing and installation hassle, the following have been removed from Test-depends: 'Test::META', 'Test::Deeply::Relaxed', 'File::Directory::Tree'". They will need to be installed to prove the xt/ tests.
 
@@ -71,4 +83,4 @@ To reduce testing and installation hassle, the following have been removed from 
 
 
 ----
-Rendered from README at 2022-08-19T21:28:03Z
+Rendered from README at 2022-09-02T20:52:10Z

@@ -1,5 +1,7 @@
 use Test;
-diag "Extra tests require Test modules not in META6.json, namely 'Test::META', 'Test::Deeply::Relaxed', 'File::Directory::Tree'";
+if (try require Test::META) === Nil {
+        exit note "Test::META needs to be installed"
+}
 
 require Test::META <&meta-ok>;
 plan 1;
