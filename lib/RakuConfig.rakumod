@@ -1,6 +1,5 @@
 use v6.d;
 unit module RakuConfig;
-no precompilation;
 
 class NoFiles is Exception {
     has $.path;
