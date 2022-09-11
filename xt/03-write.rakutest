@@ -50,7 +50,4 @@ my %round = get-config;
 cmp-ok %config.keys, '(==)', %round.keys, 'round tour same keys';
 isa-ok %round<strange>, MyClass, 'got uncommon object';
 
-#restore
-chdir $top;
-rmtree $tmp;
 done-testing;

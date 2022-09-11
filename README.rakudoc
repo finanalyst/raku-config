@@ -46,27 +46,58 @@ then
     # throws an Exception if an overwrite is attempted.
 
 =head1 Subs
-Two subs are exported
+Three subs are exported
 
 =head2 get-config
 
-    #| :path is an existing file, or a current directory,
+Has several variants
+
+    get-config
+
+Will look in the current working directory for C<config.raku> and / or C<configs/> subdirectory.
+
+If both found, the keys will be merged, but repeated keys (eg. in two or more of the files in the C<configs/> subdirectory)
+will raise an exception
+
+    get-config(:@required)
+
+Will look for the keys listed in @required in the defaults, as above.
+
+If the @required keys are not found, a MissingKeys exception will be thrown.
+
+    get-config(Str:D $mode)
+
+Will look for the defaults in the $mode directory, if it exists.
+
+    #| :path is an existing file, or a directory,
     #| if a directory, it should contain .raku files
     #| :required are the keys needed in a config after all .raku files are evaluated
     #| If :required is not given, or empty, no keys will be tested for existence
-    #| With no parameters, the file 'config.raku' in the current directory is assumed
-    multi sub get-config(:$path = 'config.raku', :@required )
+    multi sub get-config(:$path, :@required )
+
+This allows for non-default filenames or directories to be searched as if C<config.raku> or C<configs/>
 
 =head2 write-config
 
-    #| :path is an existing file, or a current directory,
-    #| if a directory, it should contain .raku files
-    #| :save are the keys to be stored in the config file
-    #| If :save is not given, or empty, ALL the keys will be saved
-    #| With no parameters, the file 'config.raku' in the current directory is assumed
-    multi sub write-config(:$path = 'config.raku', :@required )
+    multi sub write-config(%ds, :$path, $fn, :@save )
 
-C<write-config> attempts to write a readable config file. But if a type is not known, it will revert to the C<.raku> version.
+C<write-config> attempts to write a readable config file.
+
+%ds is the config file to be written as Raku hash.
+
+$path is a string that must be a valid path, or the Current working directory
+
+$fn is the file name where the hash is to be stored, defaults to 'config.raku'
+
+@save, see format-config
+
+=head2 format-config
+
+    multi sub format-config(%ds, @save)
+
+Formats %ds for writing. If a key points to a type that is not known to the formatter, it will revert to the C<.raku> version.
+
+@save is a list of keys to be written, defaults to Empty, in which case all keys are written.
 
 =head1 Testing
 

@@ -8,7 +8,10 @@
 [2021-02-08](#2021-02-08)  
 [v0.3.1 2022-07-08](#v031-2022-07-08)  
 [v0.4.0 2022-07-08](#v040-2022-07-08)  
-[Head](#head)  
+[v0.5.0 2022-08-19](#v050-2022-08-19)  
+[v0.6.0 2022-09-02](#v060-2022-09-02)  
+[v0.6.1 2022-09-03](#v061-2022-09-03)  
+[v0.7.0 2022-09-11](#v070-2022-09-11)  
 
 ----
 # 2021-01-24
@@ -40,12 +43,7 @@
 # v0.4.0 2022-07-08
 *  change version to 3 part, bump
 
-# head
-
-v0.5.0 2022-08-19
-
-
-
+# v0.5.0 2022-08-19
 *  removed all mention of :no-cache. It is an unnecessary optimisation. Config files are not large.
 
 *  comment out proto for write-config. This removes all reference to write-config.
@@ -56,9 +54,38 @@ v0.5.0 2022-08-19
 
 *  renamed all files to raku* extensions
 
+# v0.6.0 2022-09-02
+*  added write-config & format-config with minimal pretty formatting.
+
+# v0.6.1 2022-09-03
+*  remove redundant no-precompilation
+
+# v0.7.0 2022-09-11
+
+
+*  increased default behaviour so that one of or both of following are tried
+
+	*  config.raku in CWD
+
+	*  configs/ directory
+
+	*  if both, then the keys are merged and tested against @required
+
+*  added get-config( Str )
+
+	*  where the Str is a directory
+
+*  if not given CWD is default.
+
+*  rewrite README
+
+*  fix CHANGELOG
+
+*  fix tests with cleanup
+
 
 
 
 
 ----
-Rendered from CHANGELOG at 2022-08-19T21:27:51Z
+Rendered from CHANGELOG at 2022-09-11T23:08:39Z

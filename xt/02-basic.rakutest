@@ -3,7 +3,7 @@ use RakuConfig;
 use Test::Deeply::Relaxed;
 use File::Directory::Tree;
 
-plan 9;
+plan 8;
 my %config;
 my $tmp = 'xt/tmp';
 rmtree $tmp if $tmp.IO.e;
@@ -13,15 +13,11 @@ chdir $tmp;
 my $path = 'config.raku';
 
 throws-like { get-config() }, RakuConfig::NoFiles,
-        message => / 'config.raku' .+ 'is not a file or' /, 'fails with no config file';
+        message => / 'contains neither ｢config.raku｣ nor' /, 'fails with no config file';
 
 %config = <one two three > Z=> 1 ..*;
 $path.IO.spurt: %config.raku;
 is-deeply-relaxed get-config(), %config, 'simple get works';
-
-$path.IO.spurt: %config.raku;
-
-is-deeply-relaxed get-config(), %config, 'round about correct';
 
 $path.IO.unlink;
 $path = 'configs';
@@ -44,7 +40,7 @@ throws-like { get-config(:$path, :required<mode supply>) },
         RakuConfig::MissingKeys,
         message => / 'The following keys were expected' /,
         'died without required keys', ;
-# with caching
+
 lives-ok { get-config(:$path, :required<axfig byfig czfig azfig>) }, 'happy with keys';
 
 is-deeply-relaxed get-config(:$path, :required<axfig byfig czfig azfig>),

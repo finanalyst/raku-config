@@ -37,14 +37,60 @@ class BadDirectory is Exception {
     }
 }
 
+multi sub get-config() {
+    get-config( $*CWD.Str )
+}
+multi sub get-config( :@required! ) {
+    get-config( $*CWD.Str, :@required )
+}
+multi sub get-config(Str:D $mode where *.IO.d, :@required --> Associative ) is export {
+    my Bool $no-config-file = False;
+    my %config;
+    try {
+        %config = get-config(:path("$mode/config.raku"), :@required );
+        CATCH {
+            when RakuConfig::BadConfig {
+                .rethrow
+            }
+            when RakuConfig::MissingKeys {
+                # will retest after tried default directory
+                .resume
+            }
+            when RakuConfig::NoFiles {
+                %config = Empty;
+                $no-config-file = True;
+                .resume
+            }
+            default { .rethrow }
+        }
+    }
+    try {
+        %config ,= get-config(:path("$mode/configs", :@required));
+        CATCH {
+            when RakuConfig::BadConfig {
+                .rethrow
+            }
+            when RakuConfig::MissingKeys {
+                # will retest
+                .resume
+            }
+            when RakuConfig::NoFiles {
+                .resume unless $no-config-file;
+                RakuConfig::NoFiles.new(:path($mode),
+                    :comment('contains neither ｢config.raku｣ nor ｢configs/｣ with valid config files')
+                ).throw
+            }
+            default { .rethrow }
+        }
+    }
+    test-missing-keys(%config, @required)
+}
 #| :path is an existing file, or a current directory,
 #| if a directory, it should contain .raku files
 #| :required are the keys needed in a config after all .raku files are evaluated
 #| If :required is not given, or empty, no keys will be tested for existence
-#| With no parameters, the file 'config.raku' in the current directory is assumed
-multi sub get-config(:$path = 'config.raku', :@required) is export {
+multi sub get-config(:$path!, :@required --> Associative ) is export {
     my %config;
-    my Bool $test-keys = ?(+@required);
     given $path.IO {
         when :e and :f {
             %config = EVALFILE $path;
@@ -62,13 +108,13 @@ multi sub get-config(:$path = 'config.raku', :@required) is export {
                 my %partial = EVALFILE "$file";
                 CATCH {
                     default {
-                        BadConfig.new(:path($path.subst(/ ^ "$*CWD" '/' /, '')), :response(.gist))
+                        BadConfig.new(:path($path.IO.basename), :response(.gist))
                             .throw
                     }
                 }
                 my @overlap = (%config.keys (&) %partial.keys).keys;
                 OverwriteKey
-                    .new(:path($path.subst(/ ^ "$*CWD" '/' /, '')), :@overlap)
+                    .new(:path($path.IO.basename), :@overlap)
                     .throw
                 if +@overlap;
                 %config ,= %partial
@@ -76,11 +122,15 @@ multi sub get-config(:$path = 'config.raku', :@required) is export {
             }
         }
         default {
-            NoFiles.new(:$path, :comment('is not a file or a directory')).throw;
+            NoFiles.new(:path($path.IO.basename), :comment('is not a file or a directory')).throw;
         }
     }
+    test-missing-keys(%config,@required)
+}
+sub test-missing-keys(%config, @required --> Associative) {
+    my Bool $test-keys = ?(+@required);
     MissingKeys.new(:missing((@required (-) %config.keys).keys.flat)).throw
-    unless !$test-keys or %config.keys (>=) @required;
+        unless !$test-keys or %config.keys (>=) @required;
     # the keys on the RHS above are required in %config. To throw here, the templates supplied are not
     # a superset of the required keys.
     %config

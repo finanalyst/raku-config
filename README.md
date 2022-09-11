@@ -11,9 +11,10 @@
 [License](#license)  
 [Purpose](#purpose)  
 [Installation and use](#installation-and-use)  
-[Subs Two subs are exported](#subs-two-subs-are-exported)  
+[Subs Three subs are exported](#subs-three-subs-are-exported)  
 [get-config](#get-config)  
 [write-config](#write-config)  
+[format-config](#format-config)  
 [Testing](#testing)  
 
 ----
@@ -52,26 +53,59 @@ my %big-config = get-config( 'config-files' );
 # detects whether keys in one file overwrite a previously set key
 # throws an Exception if an overwrite is attempted.
 ```
-# Subs Two subs are exported
+# Subs Three subs are exported
 ## get-config
+Has several variants
+
 ```
-#| :path is an existing file, or a current directory,
+get-config
+```
+Will look in the current working directory for `config.raku` and / or `configs/` subdirectory.
+
+If both found, the keys will be merged, but repeated keys (eg. in two or more of the files in the `configs/` subdirectory) will raise an exception
+
+```
+get-config(:@required)
+```
+Will look for the keys listed in @required in the defaults, as above.
+
+If the @required keys are not found, a MissingKeys exception will be thrown.
+
+```
+get-config(Str:D $mode)
+```
+Will look for the defaults in the $mode directory, if it exists.
+
+```
+#| :path is an existing file, or a directory,
 #| if a directory, it should contain .raku files
 #| :required are the keys needed in a config after all .raku files are evaluated
 #| If :required is not given, or empty, no keys will be tested for existence
-#| With no parameters, the file 'config.raku' in the current directory is assumed
-multi sub get-config(:$path = 'config.raku', :@required )
+multi sub get-config(:$path, :@required )
 ```
+This allows for non-default filenames or directories to be searched as if `config.raku` or `configs/`
+
 ## write-config
 ```
-#| :path is an existing file, or a current directory,
-#| if a directory, it should contain .raku files
-#| :save are the keys to be stored in the config file
-#| If :save is not given, or empty, ALL the keys will be saved
-#| With no parameters, the file 'config.raku' in the current directory is assumed
-multi sub write-config(:$path = 'config.raku', :@required )
+multi sub write-config(%ds, :$path, $fn, :@save )
 ```
-`write-config` attempts to write a readable config file. But if a type is not known, it will revert to the `.raku` version.
+`write-config` attempts to write a readable config file.
+
+%ds is the config file to be written as Raku hash.
+
+$path is a string that must be a valid path, or the Current working directory
+
+$fn is the file name where the hash is to be stored, defaults to 'config.raku'
+
+@save, see format-config
+
+## format-config
+```
+multi sub format-config(%ds, @save)
+```
+Formats %ds for writing. If a key points to a type that is not known to the formatter, it will revert to the `.raku` version.
+
+@save is a list of keys to be written, defaults to Empty, in which case all keys are written.
 
 # Testing
 To reduce testing and installation hassle, the following have been removed from Test-depends: 'Test::META', 'Test::Deeply::Relaxed', 'File::Directory::Tree'". They will need to be installed to prove the xt/ tests.
@@ -83,4 +117,4 @@ To reduce testing and installation hassle, the following have been removed from 
 
 
 ----
-Rendered from README at 2022-09-02T20:52:10Z
+Rendered from README at 2022-09-11T23:08:28Z
