@@ -2,8 +2,9 @@ use v6.d;
 use Test;
 use RakuConfig;
 use File::Directory::Tree;
+use Test::Deeply::Relaxed;
 
-plan 11;
+plan 13;
 my %config;
 my $tmp = 'xt/new-tmp';
 if $tmp.IO.e {
@@ -49,5 +50,17 @@ ok 'config.raku'.IO ~~ :e & :f, 'config is now present';
 my %round = get-config;
 cmp-ok %config.keys, '(==)', %round.keys, 'round tour same keys';
 isa-ok %round<strange>, MyClass, 'got uncommon object';
+
+%config = %(
+    plugins => %(
+        :someplug<1.2.3>,
+        :plug2<2.4.2>
+        ),
+    );
+lives-ok { write-config(%config) },'multiple hashes returns';
+
+%round = get-config;
+
+is-deeply-relaxed %config, %round, 'round-trip works';
 
 done-testing;

@@ -38,16 +38,16 @@ class BadDirectory is Exception {
 }
 
 multi sub get-config() {
-    get-config( $*CWD.Str )
+    get-config($*CWD.Str)
 }
-multi sub get-config( :@required! ) {
-    get-config( $*CWD.Str, :@required )
+multi sub get-config(:@required!) {
+    get-config($*CWD.Str, :@required)
 }
-multi sub get-config(Str:D $mode where *.IO.d, :@required --> Associative ) is export {
+multi sub get-config(Str:D $mode where *.IO.d, :@required --> Associative) is export {
     my Bool $no-config-file = False;
     my %config;
     try {
-        %config = get-config(:path("$mode/config.raku"), :@required );
+        %config = get-config(:path("$mode/config.raku"), :@required);
         CATCH {
             when RakuConfig::BadConfig {
                 .rethrow
@@ -78,7 +78,7 @@ multi sub get-config(Str:D $mode where *.IO.d, :@required --> Associative ) is e
                 .resume unless $no-config-file;
                 RakuConfig::NoFiles.new(:path($mode),
                     :comment('contains neither ｢config.raku｣ nor ｢configs/｣ with valid config files')
-                ).throw
+                    ).throw
             }
             default { .rethrow }
         }
@@ -89,7 +89,7 @@ multi sub get-config(Str:D $mode where *.IO.d, :@required --> Associative ) is e
 #| if a directory, it should contain .raku files
 #| :required are the keys needed in a config after all .raku files are evaluated
 #| If :required is not given, or empty, no keys will be tested for existence
-multi sub get-config(:$path!, :@required --> Associative ) is export {
+multi sub get-config(:$path!, :@required --> Associative) is export {
     my %config;
     given $path.IO {
         when :e and :f {
@@ -125,12 +125,12 @@ multi sub get-config(:$path!, :@required --> Associative ) is export {
             NoFiles.new(:path($path.IO.basename), :comment('is not a file or a directory')).throw;
         }
     }
-    test-missing-keys(%config,@required)
+    test-missing-keys(%config, @required)
 }
 sub test-missing-keys(%config, @required --> Associative) {
     my Bool $test-keys = ?(+@required);
     MissingKeys.new(:missing((@required (-) %config.keys).keys.flat)).throw
-        unless !$test-keys or %config.keys (>=) @required;
+    unless !$test-keys or %config.keys (>=) @required;
     # the keys on the RHS above are required in %config. To throw here, the templates supplied are not
     # a superset of the required keys.
     %config
@@ -178,13 +178,13 @@ multi sub format-config(%d, :$level = 1, :@save = () --> Str) is export {
             }
             default {
                 @r-lines.append: "\t" x $level ~ ":$key\(\n"
-                    ~ "\t" x ($level+1) ~ $val.raku
+                    ~ "\t" x ($level + 1) ~ $val.raku
                     ~ "\n" ~ "\t" x $level ~ '),'
             }
         }
     }
-    return @r-lines if $level > 1;
-    "%\(\n" ~ @r-lines.join("\n") ~ "\n)"
+    if $level > 1 { @r-lines.join("\n") }
+    else { "%\(\n" ~ @r-lines.join("\n") ~ "\n)" }
 }
 multi sub format-config(@a, :$level --> Str) is export {
     @a.map({ "\n" ~ "\t" x $level ~ "\"$_\"," }).join

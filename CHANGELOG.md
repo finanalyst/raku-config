@@ -12,6 +12,7 @@
 [v0.6.0 2022-09-02](#v060-2022-09-02)  
 [v0.6.1 2022-09-03](#v061-2022-09-03)  
 [v0.7.0 2022-09-11](#v070-2022-09-11)  
+[v0.7.1 2022-09-13](#v071-2022-09-13)  
 
 ----
 # 2021-01-24
@@ -61,8 +62,6 @@
 *  remove redundant no-precompilation
 
 # v0.7.0 2022-09-11
-
-
 *  increased default behaviour so that one of or both of following are tried
 
 	*  config.raku in CWD
@@ -83,9 +82,14 @@
 
 *  fix tests with cleanup
 
+# v0.7.1 2022-09-13
+
+
+*  fix bad return type with embedded Hash
+
 
 
 
 
 ----
-Rendered from CHANGELOG at 2022-09-11T23:08:39Z
+Rendered from CHANGELOG at 2022-09-13T21:59:19Z
