@@ -13,6 +13,7 @@
 [v0.6.1 2022-09-03](#v061-2022-09-03)  
 [v0.7.0 2022-09-11](#v070-2022-09-11)  
 [v0.7.1 2022-09-13](#v071-2022-09-13)  
+[v0.7.2 2022-09-16](#v072-2022-09-16)  
 
 ----
 # 2021-01-24
@@ -83,13 +84,18 @@
 *  fix tests with cleanup
 
 # v0.7.1 2022-09-13
-
-
 *  fix bad return type with embedded Hash
+
+# v0.7.2 2022-09-16
+
+
+*  change formatting of multiline Str.
+
+*  make Num into Numeric to capture more generic numbers
 
 
 
 
 
 ----
-Rendered from CHANGELOG at 2022-09-13T21:59:19Z
+Rendered from CHANGELOG at 2022-09-16T19:27:25Z

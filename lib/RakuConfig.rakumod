@@ -159,9 +159,17 @@ multi sub format-config(%d, :$level = 1, :@save = () --> Str) is export {
                     ~ "\n" ~ "\t" x $level ~ ")),";
             }
             when Str:D {
-                @r-lines.append: "\t" x $level ~ ":{ $key }{ $val ?? '<' ~ $val ~ '>' !! '()' },"
+                my @lines = $val.lines;
+                if @lines.elems <= 1 {
+                    @r-lines.append: "\t" x $level ~ ":{ $key }{ $val ?? '<' ~ $val ~ '>' !! '()' },"
+                }
+                else {
+                    @r-lines.append: "\t" x $level ~ ":{ $key }( q:to/DATA/ ),";
+                    @r-lines.append: "\t" x ($level+1) ~ @lines.join( "\n" ~ "\t" x ($level+1) );
+                    @r-lines.append: "\t" x ($level+1) ~ 'DATA'
+                }
             }
-            when Num {
+            when Numeric {
                 @r-lines.append: "\t" x $level ~ ":$key\($val),"
             }
             when Positional {

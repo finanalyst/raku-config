@@ -52,4 +52,8 @@
 =head1 v0.7.1 2022-09-13
 =item fix bad return type with embedded Hash
 
+=head1 v0.7.2 2022-09-16
+=item change formatting of multiline Str.
+=item make Num into Numeric to capture more generic numbers
+
 =end pod
