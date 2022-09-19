@@ -1,0 +1,37 @@
+use v6.d;
+use Test;
+use Test::Deeply::Relaxed;
+use File::Directory::Tree;
+use RakuConfig;
+
+plan 5;
+
+my $tmp = 'xt/mode-test';
+rmtree $tmp if $tmp.IO.e;
+
+throws-like { get-config($tmp) }, RakuConfig::NotValidDirectory,
+    message => / 'Expecting ｢' $tmp '｣ to be a directory' /,
+    'fails with no directory';
+
+mktree $tmp;
+
+throws-like { get-config($tmp) }, RakuConfig::NoFiles,
+        message => / 'contains neither ｢config.raku｣ nor' /, 'fails with no config file';
+
+my %config = <one two three > Z=> 1 ..*;
+"$tmp/config.raku".IO.spurt: %config.raku;
+is-deeply-relaxed get-config($tmp), %config, 'only config get works';
+my %big-conf;
+my $path = "$tmp/configs";
+mktree $path;
+for <xfig yfig zfig> {
+    my %config = (<a b c>  X~ $_) Z=> 1 ..*;
+    "$path/$_\.raku".IO.spurt: %config.raku;
+    %big-conf,=%config;
+}
+"$tmp/config.raku".IO.unlink;
+is-deeply-relaxed get-config($tmp), %big-conf, 'only configs get works';
+"$tmp/config.raku".IO.spurt: %config.raku;
+is-deeply-relaxed get-config($tmp), %(%big-conf, %config), 'both config and configs get works';
+
+done-testing;

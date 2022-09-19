@@ -14,6 +14,7 @@
 [v0.7.0 2022-09-11](#v070-2022-09-11)  
 [v0.7.1 2022-09-13](#v071-2022-09-13)  
 [v0.7.2 2022-09-16](#v072-2022-09-16)  
+[v0.7.3 2022-09-19](#v073-2022-09-19)  
 
 ----
 # 2021-01-24
@@ -87,15 +88,22 @@
 *  fix bad return type with embedded Hash
 
 # v0.7.2 2022-09-16
-
-
 *  change formatting of multiline Str.
 
 *  make Num into Numeric to capture more generic numbers
+
+# v0.7.3 2022-09-19
+
+
+*  add tests for mode form of RakuConfig
+
+*  improve Exception message for non-directory mode
+
+*  fix error in mode
 
 
 
 
 
 ----
-Rendered from CHANGELOG at 2022-09-16T19:27:25Z
+Rendered from CHANGELOG at 2022-09-19T17:54:05Z

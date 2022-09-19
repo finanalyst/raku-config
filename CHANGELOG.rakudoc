@@ -56,4 +56,9 @@
 =item change formatting of multiline Str.
 =item make Num into Numeric to capture more generic numbers
 
+=head1 v0.7.3 2022-09-19
+=item add tests for mode form of RakuConfig
+=item improve Exception message for non-directory mode
+=item fix error in mode
+
 =end pod

@@ -74,7 +74,7 @@ If the @required keys are not found, a MissingKeys exception will be thrown.
 ```
 get-config(Str:D $mode)
 ```
-Will look for the defaults in the $mode directory, if it exists.
+Will look for both `config.raku` and files under `configs/` in the $mode directory. Throws a _NotValidDirectory_ exception if $mode is not a directory.
 
 ```
 #| :path is an existing file, or a directory,
@@ -117,4 +117,4 @@ To reduce testing and installation hassle, the following have been removed from 
 
 
 ----
-Rendered from README at 2022-09-11T23:08:28Z
+Rendered from README at 2022-09-19T17:53:53Z

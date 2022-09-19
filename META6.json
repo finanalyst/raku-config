@@ -1,7 +1,7 @@
 {
   "name": "RakuConfig",
   "description": "Get config files that are Raku structures",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "perl": "6.d",
   "authors": [
     "Richard Hainsworth"

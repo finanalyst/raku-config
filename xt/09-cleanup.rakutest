@@ -7,7 +7,7 @@ if %*ENV<NoDelete> {
     skip-rest 'NoDelete set in environment';
 }
 else {
-    rmtree "xt/$_" for <tmp new-tmp>;
+    rmtree "xt/$_" for <tmp new-tmp mode-test>;
     my @xt = 'xt'.IO.dir.grep({ $_ ~~ :e & :d });
     ok @xt.elems == 0, @xt.elems
         ?? ('sub-directories of ｢xt/｣ not all deleted, still got: ' ~ @xt>>.Str)

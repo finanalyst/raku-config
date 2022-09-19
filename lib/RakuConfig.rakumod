@@ -36,6 +36,12 @@ class BadDirectory is Exception {
         "Cannot write ｢$!fn｣ to ｢$!path｣."
     }
 }
+class NotValidDirectory is Exception {
+    has $.mode;
+    method message {
+        "Expecting ｢$!mode｣ to be a directory"
+    }
+}
 
 multi sub get-config() {
     get-config($*CWD.Str)
@@ -43,7 +49,9 @@ multi sub get-config() {
 multi sub get-config(:@required!) {
     get-config($*CWD.Str, :@required)
 }
-multi sub get-config(Str:D $mode where *.IO.d, :@required --> Associative) is export {
+multi sub get-config(Str:D $mode, :@required --> Associative) is export {
+    NotValidDirectory.new(:$mode).throw
+        unless $mode.IO ~~ :e & :d;
     my Bool $no-config-file = False;
     my %config;
     try {
@@ -65,7 +73,7 @@ multi sub get-config(Str:D $mode where *.IO.d, :@required --> Associative) is ex
         }
     }
     try {
-        %config ,= get-config(:path("$mode/configs", :@required));
+        %config ,= get-config(:path("$mode/configs"), :@required);
         CATCH {
             when RakuConfig::BadConfig {
                 .rethrow
