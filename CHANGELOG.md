@@ -15,6 +15,7 @@
 [v0.7.1 2022-09-13](#v071-2022-09-13)  
 [v0.7.2 2022-09-16](#v072-2022-09-16)  
 [v0.7.3 2022-09-19](#v073-2022-09-19)  
+[v0.7.4 2023-04-02](#v074-2023-04-02)  
 
 ----
 # 2021-01-24
@@ -93,17 +94,20 @@
 *  make Num into Numeric to capture more generic numbers
 
 # v0.7.3 2022-09-19
-
-
 *  add tests for mode form of RakuConfig
 
 *  improve Exception message for non-directory mode
 
 *  fix error in mode
 
+# v0.7.4 2023-04-02
+
+
+*  typo fix. ++Marten Polgar
+
 
 
 
 
 ----
-Rendered from CHANGELOG at 2022-09-19T17:54:05Z
+Rendered from CHANGELOG at 2023-04-02T17:59:45Z

@@ -180,6 +180,13 @@ multi sub format-config(%d, :$level = 1, :@save = () --> Str) is export {
             when Numeric {
                 @r-lines.append: "\t" x $level ~ ":$key\($val),"
             }
+            when Array {
+                @r-lines.append:
+                    "\t" x $level
+                        ~ ":$key\( \["
+                            ~ format-config($val, :level($level + 1))
+                            ~ "\n" ~ "\t" x $level ~ "]),"
+            }
             when Positional {
                 if .elems {
                     @r-lines.append:

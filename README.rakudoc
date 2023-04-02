@@ -81,7 +81,7 @@ This allows for non-default filenames or directories to be searched as if C<conf
 
 =head2 write-config
 
-    multi sub write-config(%ds, :$path, $fn, :@save )
+    multi sub write-config(%ds, :$path, :$fn, :@save )
 
 C<write-config> attempts to write a readable config file.
 

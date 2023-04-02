@@ -1,4 +1,3 @@
-![github-tests-passing-badge](https://github.com/finanalyst/raku-config/actions/workflows/test.yaml/badge.svg)
 # Raku Config files
 >Introducing RakuON (Raku Object Notation) to write configuration files.
 
@@ -87,7 +86,7 @@ This allows for non-default filenames or directories to be searched as if `confi
 
 ## write-config
 ```
-multi sub write-config(%ds, :$path, $fn, :@save )
+multi sub write-config(%ds, :$path, :$fn, :@save )
 ```
 `write-config` attempts to write a readable config file.
 
@@ -117,4 +116,4 @@ To reduce testing and installation hassle, the following have been removed from 
 
 
 ----
-Rendered from README at 2022-09-19T17:53:53Z
+Rendered from README at 2023-04-02T17:59:46Z
