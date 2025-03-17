@@ -1,4 +1,6 @@
 use v6.d;
+use PrettyDump;
+
 unit module RakuConfig;
 
 class NoFiles is Exception {
@@ -211,4 +213,66 @@ multi sub format-config(%d, :$level = 1, :@save = () --> Str) is export {
 }
 multi sub format-config(@a, :$level --> Str) is export {
     @a.map({ "\n" ~ "\t" x $level ~ "\"$_\"," }).join
+}
+sub dictionary-store( %dict, $fn ) is export {
+    my $pretty = PrettyDump.new;
+    my $pair-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
+        [~]
+        '｢', $ds.key, '｣',
+        ' => ',
+        $pretty.dump: $ds.value, :depth(0)
+
+    };
+    my $hash-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
+        my $longest-key = $ds.keys.max: *.chars;
+#        my $len-limit = 10;
+        my $template = "%-{2+$depth+1+$longest-key.chars}s => %s";
+#        if $longest-key > $len-limit {
+#            $template = "%-{2+$depth+1+$len-limit}s\n{' 'x$len-limit}=> %s"
+#        }
+
+        my $str = do {
+            if @($ds).keys {
+                my $separator = [~] $pretty.pre-separator-spacing, ',', $pretty.post-separator-spacing;
+                [~]
+                $pretty.pre-item-spacing,
+                join( $separator,
+                        grep { $_ ~~ Str:D },
+                                map {
+                                    /^ \t* '｢' .*? '｣' \h+ '=>' \h+/
+                                            ??
+                                            sprintf( $template, .split: / \h+ '=>' \h+  /, 2 )
+                                            !!
+                                            $_
+                                },
+                                        map { $pretty.dump: $_, :depth($depth+1) }, $ds.pairs.sort
+                ),
+                $pretty.post-item-spacing;
+            }
+            else {
+                $pretty.intra-group-spacing;
+            }
+        }
+        "\{$str}"
+    }
+    my $array-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
+        $pretty.Array($ds, :start('['), :$depth)
+    };
+    my $list-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
+        $pretty.List($ds, :start('('), :$depth)
+    };
+    my $rakuast-block-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
+        $pretty.dump: $ds.raku, :depth(0)
+    };
+    my $instant-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
+        $pretty.dump: $ds.raku, :depth(0)
+    };
+    $pretty.add-handler: 'Instant', $instant-code;
+    $pretty.add-handler: 'Array', $array-code;
+    $pretty.add-handler: 'List', $list-code;
+    $pretty.add-handler: 'Pair', $pair-code;
+    $pretty.add-handler: 'Hash', $hash-code;
+    $pretty.add-handler: 'SetHash', $hash-code;
+    $pretty.add-handler: 'RakuAST::Doc::Block', $rakuast-block-code;
+    $fn.IO.spurt: $pretty.dump(%dict);
 }
