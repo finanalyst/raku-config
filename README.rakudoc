@@ -1,13 +1,11 @@
-=begin pod
+=begin rakudoc
 =TITLE Raku Config files
-
-=LICENSE Artist 2
-
-=AUTHOR Richard Hainsworth, aka finanalyst
-
+=for LICENSE :hidden
+Artist 2
+=for AUTHOR :hidden
+Richard Hainsworth, aka finanalyst
 =SUBTITLE Introducing RakuON (Raku Object Notation) to write configuration files.
-
-=head1 Purpose
+=head Purpose
 
 Lots of modules need configuration files. Many Raku modules use JSON, or YAML. But neither
 YAML nor JSON is not Raku, and a configuration file has to be brought in
@@ -28,7 +26,7 @@ by the program.
 When reading in a configuration file, any Raku code is possible, so configuration files can look at
 Environment variables, or slurp in local files.
 
-=head1 Installation and use
+=head Installation and use
 
 Simply
 
@@ -45,8 +43,8 @@ then
     # detects whether keys in one file overwrite a previously set key
     # throws an Exception if an overwrite is attempted.
 
-=head1 Subs
-Three subs are exported
+=head Subs
+Four subs are exported
 
 =head2 get-config
 
@@ -79,6 +77,10 @@ $mode is not a directory.
 
 This allows for non-default filenames or directories to be searched as if C<config.raku> or C<configs/>
 
+=head2 dictionary-store(%dictionary, $name-of-file-where-stored)
+
+Uses an extention of PrettyDump to store a dictionary.
+
 =head2 write-config
 
     multi sub write-config(%ds, :$path, :$fn, :@save )
@@ -101,10 +103,10 @@ Formats %ds for writing. If a key points to a type that is not known to the form
 
 @save is a list of keys to be written, defaults to Empty, in which case all keys are written.
 
-=head1 Testing
+=head Testing
 
 To reduce testing and installation hassle, the following have been removed from Test-depends:
 'Test::META', 'Test::Deeply::Relaxed', 'File::Directory::Tree'". They will need to be
 installed to prove the xt/ tests.
 
-=end pod
+=end rakudoc

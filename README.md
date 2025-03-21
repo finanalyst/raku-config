@@ -7,26 +7,15 @@
 
 ## Table of Contents
 
-<a href="#LICENSE">LICENSE</a>   
-<a href="#AUTHOR">AUTHOR</a>   
 <a href="#Purpose">Purpose</a>   
 <a href="#Installation_and_use">Installation and use</a>   
-<a href="#Subs_Three_subs_are_exported">Subs Three subs are exported</a>   
+<a href="#Subs_Four_subs_are_exported">Subs Four subs are exported</a>   
 &nbsp;&nbsp;- <a href="#get-config">get-config</a>   
+&nbsp;&nbsp;- <a href="#dictionary-store(%dictionary,_$name-of-file-where-stored)">dictionary-store(%dictionary, $name-of-file-where-stored)</a>   
 &nbsp;&nbsp;- <a href="#write-config">write-config</a>   
 &nbsp;&nbsp;- <a href="#format-config">format-config</a>   
 <a href="#Testing">Testing</a>   
 
-
-<div id="LICENSE"></div>
-
-## LICENSE
-Artist 2
-
-<div id="AUTHOR"></div>
-
-## AUTHOR
-Richard Hainsworth, aka finanalyst
 
 <div id="Purpose"></div>
 
@@ -67,9 +56,9 @@ my %big-config = get-config( 'config-files' );
 # throws an Exception if an overwrite is attempted.
 ```
 
-<div id="Subs Three subs are exported"></div><div id="Subs_Three_subs_are_exported"></div>
+<div id="Subs Four subs are exported"></div><div id="Subs_Four_subs_are_exported"></div>
 
-## Subs Three subs are exported
+## Subs Four subs are exported
 <div id="get-config"></div>
 
 ### get-config
@@ -106,6 +95,12 @@ get-config(Str:D $mode)
 multi sub get-config(:$path, :@required )
 ```
 <span class="para" id="2f91930"></span>This allows for non-default filenames or directories to be searched as if `config.raku` or `configs/` 
+
+
+<div id="dictionary-store(%dictionary, $name-of-file-where-stored)"></div><div id="dictionary-store(%dictionary,_$name-of-file-where-stored)"></div>
+
+### dictionary-store(%dictionary, $name-of-file-where-stored)
+<span class="para" id="713319a"></span>Uses an extention of PrettyDump to store a dictionary. 
 
 <div id="write-config"></div>
 
@@ -146,7 +141,7 @@ multi sub format-config(%ds, @save)
 
 ----
 
-Rendered from ./README.rakudoc/README at 19:02 UTC on 2024-12-29
+Rendered from ./README.rakudoc/README at 09:11 UTC on 2025-03-21
 
-Source last modified at 19:01 UTC on 2024-12-29
+Source last modified at 09:08 UTC on 2025-03-21
 
