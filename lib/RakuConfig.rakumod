@@ -267,6 +267,10 @@ sub dictionary-store( %dict, $fn ) is export {
     my $instant-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
         $pretty.dump: $ds.raku, :depth(0)
     };
+    my $DateTime-code = -> PrettyDump $pretty, $ds, Int:D :$depth = 0 --> Str {
+        $pretty.dump: $ds.raku, :depth(0)
+    };
+    $pretty.add-handler: 'DateTime', $DateTime-code;
     $pretty.add-handler: 'Instant', $instant-code;
     $pretty.add-handler: 'Array', $array-code;
     $pretty.add-handler: 'List', $list-code;
