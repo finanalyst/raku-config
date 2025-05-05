@@ -277,6 +277,7 @@ sub dictionary-store( %dict, $fn ) is export {
     $pretty.add-handler: 'Pair', $pair-code;
     $pretty.add-handler: 'Hash', $hash-code;
     $pretty.add-handler: 'SetHash', $hash-code;
+    $pretty.add-handler: 'BagHash', $hash-code;
     $pretty.add-handler: 'RakuAST::Doc::Block', $rakuast-block-code;
     $fn.IO.spurt: $pretty.dump(%dict);
 }
